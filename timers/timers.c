@@ -8,6 +8,7 @@
 #define overflow_interrupt_T1 PIE1bits.TMR1IE
 #define peripheral_interrupt INTCONbits.PEIE
 
+
 void config_timer(int timer_module,int prescaler,int interruption,char clock){
     
     if(interruption==1){

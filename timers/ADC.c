@@ -6,7 +6,7 @@
 #define ADC_clock_8 ADCON1bits.ADCS0
 #define ADC_interrupt PIE1bits.ADIE
 #define enable_ADC ADCON0bits.ADON
-#define start_conversion ADCON0bits.GO_nDONE
+
 
 void config_ADC(){
     A2_port_state = 1; //As input

@@ -8,6 +8,7 @@
 #ifndef ADC_H
 #define	ADC_H
 #define start_conversion ADCON0bits.GO_nDONE
+
 void config_ADC();
 
 
