@@ -1,13 +1,18 @@
 
-#include <stdio.h>
 #include <PIC16F1827.h>
 #include "timers.h"
-
+#define enable_interrupts INTCONbits.GIE
+#define enable_T1 T1CONbits.TMR1ON
+#define clock_source_0 T1CONbits.TMR1CS0
+#define clock_source_1 T1CONbits.TMR1CS1
+#define overflow_interrupt_T1 PIE1bits.TMR1IE
+#define peripheral_interrupt INTCONbits.PEIE
 
 void config_timer(int timer_module,int prescaler,int interruption,char clock){
     
     if(interruption==1){
-        INTCON |= 0x80; //set GIE bit 
+        enable_interrupts = 1; //set GIE bit 
+        peripheral_interrupt = 1; //set PEIE bit
     }
     if (timer_module == 0){
         OPTION_REG = 0x20; // set TMR0CS 
@@ -42,8 +47,9 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
     }
     if (timer_module == 1){
         T1CON &= 0x00;
-        T1CON |= 0x01;
         T1GCON &= 0x00;
+        enable_T1 = 1;
+        
         if(clock == 'I'){ //Internal clock
       
             if(prescaler == 2){
@@ -56,11 +62,10 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
                 T1CON |= prescaler_T1_8;
             }
             
-            T1CON |= 0x40;
+            clock_source_0 = 1; //System clock enable (Fosc)
         }
         
-        T1GCON |= 0x40;
-        PIE1 |= 0x01;
-        INTCON |= 0xC0;
+        overflow_interrupt_T1 = 1;
+        
     }
 }
