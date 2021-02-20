@@ -2,11 +2,11 @@
 #include <PIC16F1827.h>
 #define LED_A PORTAbits.RA2
 #define LED_B PORTAbits.RA3
-#define LED_C PORTAbits.RA4
-#define LED_D PORTBbits.RB0
-#define LED_E PORTBbits.RB1
-#define LED_F PORTBbits.RB2
-#define LED_G PORTBbits.RB3
+#define LED_C PORTBbits.RB4
+#define LED_D PORTAbits.RA6
+#define LED_E PORTAbits.RA7
+#define LED_F PORTAbits.RA1
+#define LED_G PORTAbits.RA0
 
 void one(){
     LED_B = 1;

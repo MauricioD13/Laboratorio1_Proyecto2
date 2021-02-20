@@ -2,16 +2,20 @@
 #include <PIC16F1827.h>
 #include "timers.h"
 #define enable_interrupts INTCONbits.GIE
-#define enable_T1 T1CONbits.TMR1ON
-#define T1_source_0 T1CONbits.TMR1CS0
-#define T1_source_1 T1CONbits.TMR1CS1
+
 #define overflow_interrupt_T1 PIE1bits.TMR1IE
 #define peripheral_interrupt INTCONbits.PEIE
-#define clean_T1 TMR1H = 0x00, TMR1L = 0x00, PIR1bits.TMR1IF = 0
+
 #define T0_source OPTION_REGbits.T0CS
 #define T0_enable_prescaler OPTION_REGbits.PSA
 #define enable_INTOSC OSCCONbits.SCS1 
 #define LOW_INTOSC_status OSCSTATbits.LFIOFR
+
+//FOR TIMER 1
+#define enable_T1 T1CONbits.TMR1ON
+#define T1_source_0 T1CONbits.TMR1CS0
+#define T1_source_1 T1CONbits.TMR1CS1
+#define clean_T1 TMR1H = 0x00, TMR1L = 0x00, PIR1bits.TMR1IF = 0
 
 int oscillator_module(){
     OSCCON = 0x00; //Leave to word config the clock system
@@ -64,6 +68,8 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
             INTCON |= 0x20;
         }
     }
+    
+    //TIMER 1
     if (timer_module == 1){
         clean_T1;
         
@@ -74,7 +80,9 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
         enable_T1 = 1;
         
         if(clock == 'I'){ //Internal clock
-      
+            if(prescaler == 0){
+                T1CON |= prescaler_T1_0;
+            }
             if(prescaler == 2){
                 T1CON |= prescaler_T1_2;
             }
@@ -88,6 +96,7 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
             T1_source_0 = 0; //System clock enable (Fosc/4)
             T1_source_1 = 0;
         }
+        T1GCONbits.TMR1GE = 0;
         overflow_interrupt_T1 = 0;
         if(interruption == 1){
             overflow_interrupt_T1 = 1;

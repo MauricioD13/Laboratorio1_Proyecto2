@@ -11,7 +11,7 @@
 #define ADC_flag PIR1bits.ADIF
 void config_ADC();
 
-
+int read_ADC();
 
 #endif	/* ADC_H */
 

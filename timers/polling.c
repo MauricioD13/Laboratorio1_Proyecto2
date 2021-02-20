@@ -12,12 +12,11 @@
 #define result_T1H TMR1H
 #define result_T1L TMR1L
 #define LED1 PORTAbits.RA4
-/*
- * 
- */
+
 int cont = 0;
 int main() {
     int status;
+    int value;
     status = oscillator_module();
     config_timer(1,0,0,'I'); //Timer module, prescaler, interruptions, clock
     
@@ -29,7 +28,7 @@ int main() {
             }
         }
         if(ADC_flag == 1){
-            SLEEP();
+            value=read_ADC();
             
         }
         

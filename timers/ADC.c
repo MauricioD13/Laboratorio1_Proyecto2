@@ -19,7 +19,9 @@ void config_ADC(){
     ADC_interrupt = 1; //Enable interrupts
     enable_ADC = 1; //Activate module
     
-    
-    
-    
+}
+int read_ADC(){
+    int value;
+    value = ADRESL;
+    value = 8<<ADRESH;
 }

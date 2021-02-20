@@ -1,6 +1,13 @@
 
 #ifndef NUMBERS_H
 #define	NUMBERS_H
+#define LED_A PORTAbits.RA2
+#define LED_B PORTAbits.RA3
+#define LED_C PORTBbits.RB4
+#define LED_D PORTAbits.RA6
+#define LED_E PORTAbits.RA7
+#define LED_F PORTAbits.RA1
+#define LED_G PORTAbits.RA0
 
 void one();
 void two();

@@ -19,6 +19,7 @@
 #define prescaler_T0_256 0x07
 
 //Timer 1
+#define prescaler_T1_0 0x00
 #define prescaler_T1_2 0x10
 #define prescaler_T1_4 0x20
 #define prescaler_T1_8 0x30
