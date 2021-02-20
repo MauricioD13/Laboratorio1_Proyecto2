@@ -8,7 +8,7 @@
 #ifndef ADC_H
 #define	ADC_H
 #define start_conversion ADCON0bits.GO_nDONE
-
+#define ADC_flag PIR1bits.ADIF
 void config_ADC();
 
 

@@ -3,10 +3,23 @@
 #include "timers.h"
 #define enable_interrupts INTCONbits.GIE
 #define enable_T1 T1CONbits.TMR1ON
-#define clock_source_0 T1CONbits.TMR1CS0
-#define clock_source_1 T1CONbits.TMR1CS1
+#define T1_source_0 T1CONbits.TMR1CS0
+#define T1_source_1 T1CONbits.TMR1CS1
 #define overflow_interrupt_T1 PIE1bits.TMR1IE
 #define peripheral_interrupt INTCONbits.PEIE
+#define clean_T1 TMR1H = 0x00, TMR1L = 0x00, PIR1bits.TMR1IF = 0
+#define T0_source OPTION_REGbits.T0CS
+#define T0_enable_prescaler OPTION_REGbits.PSA
+#define enable_INTOSC OSCCONbits.SCS1 
+#define LOW_INTOSC_status OSCSTATbits.LFIOFR
+
+int oscillator_module(){
+    OSCCON = 0x00; //Leave to word config the clock system
+   
+    return LOW_INTOSC_status;
+}
+
+
 
 
 void config_timer(int timer_module,int prescaler,int interruption,char clock){
@@ -15,9 +28,13 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
         enable_interrupts = 1; //set GIE bit 
         peripheral_interrupt = 1; //set PEIE bit
     }
+    
     if (timer_module == 0){
-        OPTION_REG = 0x20; // set TMR0CS 
-        if(prescaler == 2){
+        T0_source = 0;// set TMR0CS 
+        if(prescaler == 0){
+            T0_enable_prescaler = 1;
+        }
+        else if(prescaler == 2){
             OPTION_REG |= prescaler_T0_2;
         }
         else if(prescaler == 4){
@@ -42,13 +59,18 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
             OPTION_REG |= prescaler_T0_256;
         }
         CPSCON0 |= 0x01;
+        
         if(interruption == 1){
             INTCON |= 0x20;
         }
     }
     if (timer_module == 1){
+        clean_T1;
+        
         T1CON &= 0x00;
         T1GCON &= 0x00;
+        
+        T1GCONbits.T1GPOL = 1;
         enable_T1 = 1;
         
         if(clock == 'I'){ //Internal clock
@@ -63,10 +85,12 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
                 T1CON |= prescaler_T1_8;
             }
             
-            clock_source_0 = 1; //System clock enable (Fosc)
+            T1_source_0 = 0; //System clock enable (Fosc/4)
+            T1_source_1 = 0;
         }
-        
-        overflow_interrupt_T1 = 1;
-        
+        overflow_interrupt_T1 = 0;
+        if(interruption == 1){
+            overflow_interrupt_T1 = 1;
+        }
     }
 }

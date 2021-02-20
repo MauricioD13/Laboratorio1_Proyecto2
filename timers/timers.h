@@ -24,5 +24,5 @@
 #define prescaler_T1_8 0x30
 
 void config_timer(int timer_module,int prescaler,int interruption,char clock);
-
+int oscillator_module();
 #endif	/* TIMERS_H */
