@@ -9,18 +9,21 @@
 #define T0_source OPTION_REGbits.T0CS
 #define T0_enable_prescaler OPTION_REGbits.PSA
 #define enable_INTOSC OSCCONbits.SCS1 
-#define LOW_INTOSC_status OSCSTATbits.LFIOFR
+#define M_INTOSC_status OSCSTATbits.MFIOFR
 
 //FOR TIMER 1
 #define enable_T1 T1CONbits.TMR1ON
 #define T1_source_0 T1CONbits.TMR1CS0
 #define T1_source_1 T1CONbits.TMR1CS1
 #define clean_T1 TMR1H = 0x00, TMR1L = 0x00, PIR1bits.TMR1IF = 0
+#define int_clock_500k OSCCONbits.IRCF0 = 1, OSCCONbits.IRCF1=1, OSCCONbits.IRCF2 = 1
+
 
 int oscillator_module(){
-    OSCCON = 0x00; //Leave to word config the clock system
-   
-    return LOW_INTOSC_status;
+    OSCCON &= 0x00; //Leave to word config the clock system
+    OSCCONbits.SCS1 = 1;
+    //int_clock_500k;
+    return M_INTOSC_status;
 }
 
 
@@ -71,15 +74,19 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
     
     //TIMER 1
     if (timer_module == 1){
-        clean_T1;
+        
+    }
+
+}
+void config_T1(int prescaler,int interruption){
+    clean_T1;
         
         T1CON &= 0x00;
         T1GCON &= 0x00;
         
-        T1GCONbits.T1GPOL = 1;
-        enable_T1 = 1;
         
-        if(clock == 'I'){ //Internal clock
+        
+        
             if(prescaler == 0){
                 T1CON |= prescaler_T1_0;
             }
@@ -95,11 +102,7 @@ void config_timer(int timer_module,int prescaler,int interruption,char clock){
             
             T1_source_0 = 0; //System clock enable (Fosc/4)
             T1_source_1 = 0;
-        }
-        T1GCONbits.TMR1GE = 0;
-        overflow_interrupt_T1 = 0;
-        if(interruption == 1){
-            overflow_interrupt_T1 = 1;
-        }
-    }
+        enable_T1 = 1;
+      
+        
 }
