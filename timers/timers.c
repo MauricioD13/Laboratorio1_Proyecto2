@@ -16,13 +16,13 @@
 #define T1_source_0 T1CONbits.TMR1CS0
 #define T1_source_1 T1CONbits.TMR1CS1
 #define clean_T1 TMR1H = 0x00, TMR1L = 0x00, PIR1bits.TMR1IF = 0
-#define int_clock_500k OSCCONbits.IRCF0 = 1, OSCCONbits.IRCF1=1, OSCCONbits.IRCF2 = 1
+#define int_clock_4M OSCCONbits.IRCF0 = 1, OSCCONbits.IRCF1=0, OSCCONbits.IRCF2 = 1, OSCCONbits.IRCF3 = 1
 
 
 int oscillator_module(){
     OSCCON &= 0x00; //Leave to word config the clock system
     OSCCONbits.SCS1 = 1;
-    //int_clock_500k;
+    int_clock_4M;
     return M_INTOSC_status;
 }
 
@@ -45,7 +45,7 @@ void config_T1(int prescaler,int interruption){
                 T1CON |= prescaler_T1_8;
             }
             
-            T1_source_0 = 0; //System clock enable (Fosc/4)
+            T1_source_0 = 1; //System clock enable (Fosc)
             T1_source_1 = 0;
         enable_T1 = 1;
       

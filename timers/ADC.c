@@ -23,6 +23,6 @@ void config_ADC(){
 }
 int read_ADC(){
     int value;
-    value = make16(ADRESH,ADRESL);
+    value = ADRESL | (ADRESH<<8);
     return value;
 }

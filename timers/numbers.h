@@ -8,7 +8,7 @@
 #define LED_E PORTAbits.RA7
 #define LED_F PORTAbits.RA1
 #define LED_G PORTAbits.RA0
-
+void zero();
 void one();
 void two();
 void three();
@@ -18,7 +18,6 @@ void six();
 void seven();
 void eight();
 void nine();
-void clean_LED();
-
+void show_number(int result);
 #endif	/* NUMBERS_H */
 
