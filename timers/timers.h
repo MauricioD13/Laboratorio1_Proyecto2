@@ -24,8 +24,9 @@
 #define prescaler_T1_4 0x20
 #define prescaler_T1_8 0x30
 #define result_T1 TMR1L | (8<<TMR1H)
+#define T1_flag PIR1bits.TMR1IF
 
-void config_timer(int timer_module,int prescaler,int interruption,char clock);
+void config_T0(int prescaler,int interruption);
 void config_T1(int prescaler,int interruption);
 int oscillator_module();
 #endif	/* TIMERS_H */

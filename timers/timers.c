@@ -26,66 +26,11 @@ int oscillator_module(){
     return M_INTOSC_status;
 }
 
-
-
-
-void config_timer(int timer_module,int prescaler,int interruption,char clock){
-    
-    if(interruption==1){
-        enable_interrupts = 1; //set GIE bit 
-        peripheral_interrupt = 1; //set PEIE bit
-    }
-    
-    if (timer_module == 0){
-        T0_source = 0;// set TMR0CS 
-        if(prescaler == 0){
-            T0_enable_prescaler = 1;
-        }
-        else if(prescaler == 2){
-            OPTION_REG |= prescaler_T0_2;
-        }
-        else if(prescaler == 4){
-            OPTION_REG |= prescaler_T0_4;
-        }
-        else if(prescaler == 8){
-            OPTION_REG |= prescaler_T0_8;
-        }
-        else if(prescaler == 16){
-            OPTION_REG |= prescaler_T0_16;
-        }
-        else if(prescaler == 32){
-            OPTION_REG |= prescaler_T0_32;
-        }
-        else if(prescaler == 64){
-            OPTION_REG |= prescaler_T0_64;
-        }
-        else if(prescaler == 128){
-            OPTION_REG |= prescaler_T0_128;
-        }
-        else if(prescaler == 264){
-            OPTION_REG |= prescaler_T0_256;
-        }
-        CPSCON0 |= 0x01;
-        
-        if(interruption == 1){
-            INTCON |= 0x20;
-        }
-    }
-    
-    //TIMER 1
-    if (timer_module == 1){
-        
-    }
-
-}
 void config_T1(int prescaler,int interruption){
     clean_T1;
         
         T1CON &= 0x00;
         T1GCON &= 0x00;
-        
-        
-        
         
             if(prescaler == 0){
                 T1CON |= prescaler_T1_0;
@@ -105,4 +50,79 @@ void config_T1(int prescaler,int interruption){
         enable_T1 = 1;
       
         
+}
+void config_T0(int prescaler,int interruption){
+
+    if(interruption==1){
+
+    enable_interrupts = 1; //set GIE bit
+
+    peripheral_interrupt = 1; //set PEIE bit
+
+    }
+
+    T0_source = 0;// set TMR0CS
+
+    if(prescaler == 0){
+
+    T0_enable_prescaler = 1;
+
+    }
+
+    else if(prescaler == 2){
+
+    OPTION_REG |= prescaler_T0_2;
+
+    }
+
+    else if(prescaler == 4){
+
+    OPTION_REG |= prescaler_T0_4;
+
+    }
+
+    else if(prescaler == 8){
+
+    OPTION_REG |= prescaler_T0_8;
+
+    }
+
+    else if(prescaler == 16){
+
+    OPTION_REG |= prescaler_T0_16;
+
+    }
+
+    else if(prescaler == 32){
+
+    OPTION_REG |= prescaler_T0_32;
+
+    }
+
+    else if(prescaler == 64){
+
+    OPTION_REG |= prescaler_T0_64;
+
+    }
+
+    else if(prescaler == 128){
+
+    OPTION_REG |= prescaler_T0_128;
+
+    }
+
+    else if(prescaler == 264){
+
+    OPTION_REG |= prescaler_T0_256;
+
+    }
+
+    CPSCON0 |= 0x01;
+
+    if(interruption == 1){
+
+    INTCON |= 0x20;
+
+    }
+
 }

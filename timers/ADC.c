@@ -13,9 +13,9 @@ void config_ADC(){
     A4_analog_config = 1; //As analog input
     ADCON0 = 0x00;
     ADC_channel = 1;
-    ADCON1 = 0x00; //All references config to 0 
-    ADCON1 |= 0x03;
-    FVRCON |= 0x03;
+    ADCON1 = 0x80; //All references config to 0 
+    //ADCON1 |= 0x03;
+    //FVRCON |= 0x03;
     
     ADC_interrupt = 0; //Enable interrupts
     enable_ADC = 1; //Activate module
@@ -23,6 +23,6 @@ void config_ADC(){
 }
 int read_ADC(){
     int value;
-    value = ADRESL | (8<<ADRESH);
+    value = make16(ADRESH,ADRESL);
     return value;
 }
