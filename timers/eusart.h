@@ -7,8 +7,10 @@
 
 #ifndef EUSART_H
 #define	EUSART_H
+#define TX_flag PIR1bits.TXIF
 
 void config_serial();
+void transmit();
 
 
 #endif	/* EUSART_H */

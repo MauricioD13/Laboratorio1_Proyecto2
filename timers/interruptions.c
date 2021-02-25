@@ -1,18 +1,15 @@
 /* 
- * File:   polling.c
+ * File:   interruptions.c
  * Author: guasonito
  *
- * Created on 19 de febrero de 2021, 12:23 PM
+ * Created on 25 de febrero de 2021, 02:55 PM
  */
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include "numbers.h"
 #include "timers.h"
-#include "ADC.h"
+#include "numbers.h"
 #include "eusart.h"
-#include <xc.h>
+#include "ADC.h"
+#include <PIC16F1827.h>
+
 #define TRANS1 PORTBbits.RB3
 #define TRANS2 PORTBbits.RB5
 #define TRANS3 PORTBbits.RB0
@@ -30,24 +27,43 @@
 #pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enable (Fail-Safe Clock Monitor is enabled)
 
 
-/*void __interrupt(low_priority) isr(void){
-    
-    
-    i++;
-    if(i==10){
-        PIR1bits.TMR1IF = 0;
-        LED1 = 0;
-        i = 0;
-    }
-}*/
 
+int cont = 0;
+STATES states;
+/*
+ * 
+ */
+
+void __interrupt() isr(void){
+    if(T1_flag ==1){
+        cont++;
+        if(cont >= 2){
+            start_conversion = 1;
+            cont = 0;
+        }
+        T1_flag = 0;
+        
+        //enable_interrupts = 1;
+    }
+    else if(ADC_flag == 1){
+        float voltage;
+        voltage = (float)(0.004882812) * read_ADC();
+        convert_number(voltage,&states);
+        states.flag_result = 1;
+        //enable_interrupts = 1;
+        ADC_flag = 0;
+    }else if(TX_flag == 1){
+        transmit(states.seg_3);
+    }
+    //enable_interrupts = 1;
+}
 int main() {
-    //config_timer(1,0,1,'I');
-    int result[3];
-    STATES states;
-    int value;
-    float voltage;
-    int cont = 0;
+    
+    config_T1(8,1);
+    
+    config_ADC();
+    
+    config_serial();
     
     PORTB = 0x00;
     PORTA = 0x00;
@@ -56,42 +72,9 @@ int main() {
     ANSELA &= 0x00;
     ANSELB &= 0x00;
     
-    oscillator_module();
-    
-    config_T1(8,0);
-    
-    config_ADC();
-    
-    config_serial();
-    
-    ADC_flag = 0;
-    
-    PIR1 = 0x00;
-   
-    start_conversion = 1;
-    
+    TRISBbits.TRISB2 = 1;
+    enable_interrupts = 1;
     while(1){
-        
-        if(start_conversion == 0){
-            
-            value = read_ADC();
-            
-            
-            
-            voltage = (float)(0.00488) * value;
-            
-            convert_number(voltage,&states);
-            ADRESL = 0x00;
-            ADRESH = 0x00;
-            show_number(result[0]);
-            
-            
-            states.flag_result = 1;
-            
-            
-            start_conversion = 1;
-         }
-        
         if(states.flag_result == 1){
             if(TXSTAbits.TRMT == 1){
                 transmit(states.seg_3);
@@ -124,33 +107,9 @@ int main() {
             
             cont = 0;
         }
-        
     }
-        /*if(TMR1H >= 0x0F && TMR1L == 0xFF){
-            
-           
-            if(estado == 1){
-                PORTAbits.RA2 = 0;
-                estado = 0;
-            }else{
-                LED_A = 1;
-                estado = 1;
-            }
-            if(start_conversion == 0){
-                start_conversion = 1;
-            }
-        }
-        if(ADC_flag == 1){
-            value = read_ADC();
-            ADRESL = 0x00;
-            ADRESH = 0x00;
-            ADC_flag = 0;
-         }*/
-        
-        
-       
-    //config_ADC();
-    //start_conversion = 1;
-      
+    
+    
+    
 }
 

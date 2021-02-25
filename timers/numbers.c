@@ -7,6 +7,15 @@
 #define LED_E PORTAbits.RA7
 #define LED_F PORTAbits.RA1
 #define LED_G PORTAbits.RA0
+
+typedef struct STATES{
+    int seg_1;
+    int seg_2;
+    int seg_3;
+    int flag_result;
+}STATES;
+
+
 void zero(){
     LED_A = 1;
     LED_B = 1;
@@ -106,9 +115,6 @@ void nine(){
 
 
 void show_number(int result){
-    //for(int i=0;i<3;i++){
-    
-    int i=0;
         if(result==1){
           one(); 
         }
@@ -140,4 +146,9 @@ void show_number(int result){
           zero(); 
         }
     //}    
+}
+void convert_number(float value,STATES *states){
+    (states->seg_3) = (int) value;
+    (states->seg_2)= (int)((value*10)-((states->seg_3)*10));
+    (states->seg_1) = (int)((value*100)-((states->seg_3 *100)+(states->seg_2 *10)));
 }

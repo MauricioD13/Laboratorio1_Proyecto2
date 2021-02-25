@@ -17,7 +17,7 @@ void config_ADC(){
     //ADCON1 |= 0x03;
     //FVRCON |= 0x03;
     
-    ADC_interrupt = 0; //Enable interrupts
+    ADC_interrupt = 1; //Enable interrupts
     enable_ADC = 1; //Activate module
     
 }
