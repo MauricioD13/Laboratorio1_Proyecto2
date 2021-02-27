@@ -9,7 +9,7 @@
 #define	ADC_H
 #define start_conversion ADCON0bits.GO_nDONE
 #define ADC_flag PIR1bits.ADIF
-void config_ADC();
+void config_ADC(int interruption);
 int read_ADC();
 
 #endif	/* ADC_H */

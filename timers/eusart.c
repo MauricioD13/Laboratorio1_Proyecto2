@@ -5,6 +5,7 @@ void config_serial(){
     
     RCSTA = 0x00;
     TXSTA = 0x00;
+    
     TXSTAbits.TXEN = 1;
     
     TXSTAbits.SYNC = 0;
@@ -16,7 +17,7 @@ void config_serial(){
     PIE1bits.TXIE = 1;
     
     SPBRGH = 0x00;
-    SPBRGL = 0x0C;
+    SPBRGL = 0x19;
     
 }
 

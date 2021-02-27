@@ -14,6 +14,7 @@ typedef struct STATES{
     int seg_2;
     int seg_3;
     int flag_result;
+    int flag_show;
 }STATES;
 
 void zero();
@@ -27,6 +28,7 @@ void seven();
 void eight();
 void nine();
 void show_number(int result);
+
 void convert_number(float value, STATES *states);
 #endif	/* NUMBERS_H */
 

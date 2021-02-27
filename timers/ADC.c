@@ -8,7 +8,7 @@
 #define enable_ADC ADCON0bits.ADON
 
 
-void config_ADC(){
+void config_ADC(int interruption){
     A4_port_state = 1; //As input
     A4_analog_config = 1; //As analog input
     ADCON0 = 0x00;
@@ -17,7 +17,10 @@ void config_ADC(){
     //ADCON1 |= 0x03;
     //FVRCON |= 0x03;
     
-    ADC_interrupt = 1; //Enable interrupts
+    ADC_interrupt = 0; //Enable interrupts
+    if(interruption == 1){
+        ADC_interrupt = 1;
+    }
     enable_ADC = 1; //Activate module
     
 }

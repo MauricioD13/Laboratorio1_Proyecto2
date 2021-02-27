@@ -16,7 +16,7 @@
 #define TRANS1 PORTBbits.RB3
 #define TRANS2 PORTBbits.RB5
 #define TRANS3 PORTBbits.RB0
-#define _XTAL_FREQ 31000
+#define _XTAL_FREQ 4000000
 // CONFIG1
 #pragma config FOSC = INTOSC    // Oscillator Selection (INTOSC oscillator: I/O function on CLKIN pin)
 #pragma config WDTE = OFF        // Watchdog Timer Enable (WDT enabled)
@@ -43,7 +43,7 @@
 
 int main() {
     //config_timer(1,0,1,'I');
-    int result[3];
+    
     STATES states;
     int value;
     float voltage;
@@ -56,6 +56,7 @@ int main() {
     ANSELA &= 0x00;
     ANSELB &= 0x00;
     
+    TRISBbits.TRISB2 = 1;
     oscillator_module();
     
     config_T1(8,0);
@@ -78,12 +79,12 @@ int main() {
             
             
             
-            voltage = (float)(0.00488) * value;
+            voltage = (float)(0.0048671) * value * 2 ;
             
             convert_number(voltage,&states);
             ADRESL = 0x00;
             ADRESH = 0x00;
-            show_number(result[0]);
+            
             
             
             states.flag_result = 1;
@@ -94,7 +95,7 @@ int main() {
         
         if(states.flag_result == 1){
             if(TXSTAbits.TRMT == 1){
-                transmit(states.seg_3);
+                transmit(states.seg_1);
             }
             
             while(cont<30){
@@ -103,11 +104,11 @@ int main() {
                     
                     TRANS2 = 0;
                     TRANS3 = 0;
-                    show_number(states.seg_1);
+                    show_number(states.seg_3);
                     TRANS1 = 1;
                     
                     
-                }else if(cont<20){
+                }else if(cont<21){
                     TRANS1 = 0;
                     TRANS3 = 0;
                     show_number(states.seg_2);
@@ -115,7 +116,7 @@ int main() {
                 }else{
                     TRANS1 = 0;
                     TRANS2 = 0;
-                    show_number(states.seg_3);
+                    show_number(states.seg_1);
                     TRANS3 = 1;
                 }
                 cont++;
@@ -126,31 +127,5 @@ int main() {
         }
         
     }
-        /*if(TMR1H >= 0x0F && TMR1L == 0xFF){
-            
-           
-            if(estado == 1){
-                PORTAbits.RA2 = 0;
-                estado = 0;
-            }else{
-                LED_A = 1;
-                estado = 1;
-            }
-            if(start_conversion == 0){
-                start_conversion = 1;
-            }
-        }
-        if(ADC_flag == 1){
-            value = read_ADC();
-            ADRESL = 0x00;
-            ADRESH = 0x00;
-            ADC_flag = 0;
-         }*/
-        
-        
-       
-    //config_ADC();
-    //start_conversion = 1;
-      
 }
 

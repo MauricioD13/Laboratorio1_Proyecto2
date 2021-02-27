@@ -145,10 +145,12 @@ void show_number(int result){
         else if(result==0){
           zero(); 
         }
-    //}    
+       
 }
 void convert_number(float value,STATES *states){
-    (states->seg_3) = (int) value;
+    
+    (states->seg_3) = (int) (value);
     (states->seg_2)= (int)((value*10)-((states->seg_3)*10));
     (states->seg_1) = (int)((value*100)-((states->seg_3 *100)+(states->seg_2 *10)));
+    
 }
