@@ -1,7 +1,7 @@
 #include <PIC16F1827.h>
 #include "eusart.h"
 
-void config_serial(){
+void config_serial(int interruption){
     
     RCSTA = 0x00;
     TXSTA = 0x00;
@@ -14,7 +14,13 @@ void config_serial(){
     
     BAUDCONbits.BRG16 = 1;
     
-    PIE1bits.TXIE = 1;
+    PIE1bits.TXIE = 0;
+    
+    if(interruption = 1){
+        PIE1bits.TXIE = 1;
+    }
+    
+    
     
     SPBRGH = 0x00;
     SPBRGL = 0x19;
@@ -52,5 +58,10 @@ void transmit(int value){
     else if(value ==9){
         TXREG = 57;
     }
-    
+    else if(value == 45){
+        TXREG = 45;
+    }
+    else if(value == 35){
+        TXREG = 35;
+    }
 }

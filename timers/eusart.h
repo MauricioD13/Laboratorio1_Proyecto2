@@ -9,7 +9,7 @@
 #define	EUSART_H
 #define TX_flag PIR1bits.TXIF
 
-void config_serial();
+void config_serial(int interruption);
 void transmit();
 
 

@@ -6,8 +6,6 @@
  */
 
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "numbers.h"
 #include "timers.h"
 #include "ADC.h"
@@ -29,20 +27,10 @@
 #pragma config IESO = ON        // Internal/External Switchover (Internal/External Switchover mode is enabled)
 #pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enable (Fail-Safe Clock Monitor is enabled)
 
+#pragma config LVP = ON         // Low-Voltage Programming Enable (Low-voltage programming enabled)
 
-/*void __interrupt(low_priority) isr(void){
-    
-    
-    i++;
-    if(i==10){
-        PIR1bits.TMR1IF = 0;
-        LED1 = 0;
-        i = 0;
-    }
-}*/
 
 int main() {
-    //config_timer(1,0,1,'I');
     
     STATES states;
     int value;
@@ -61,9 +49,9 @@ int main() {
     
     config_T1(8,0);
     
-    config_ADC();
+    config_ADC(0);
     
-    config_serial();
+    config_serial(0);
     
     ADC_flag = 0;
     

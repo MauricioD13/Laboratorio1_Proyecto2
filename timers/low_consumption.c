@@ -30,9 +30,7 @@
 
 #pragma config LVP = ON         // Low-Voltage Programming Enable (Low-voltage programming enabled)
 
-
 int cont = 0;
-int cont_tx = 0;
 STATES states;
 /*
  * 
@@ -54,44 +52,31 @@ void __interrupt() isr(void){
             cont = 0;
         }
         T1_flag = 0;
-        
+        if(states.flag_show == 1){
+            WDTCONbits.SWDTEN = 1;
+            SLEEP();
+        }
+        //enable_interrupts = 1;
     }
     else if(ADC_flag == 1){
         
         float voltage;
-        voltage = (float)((0.004882812) * (read_ADC())*2 - 0.02); //Equation to convert ADC read to voltage
+        voltage = (float)((0.004882812) * (read_ADC())*2 - 0.02);//Equation to convert ADC read to voltage
         
-        convert_number0(voltage,&states); // Convert the float number in three separated numbers
+        convert_number0(voltage,&states);// Convert the float number in three separated numbers
         
-        states.flag_result = 1; // This flag indicate if there is a number to show 
-  
+        states.flag_result = 1;// This flag indicate if there is a number to show
+        
         ADC_flag = 0;
         
     }else if(TX_flag == 1 && states.flag_result == 1){
-        if(cont_tx == 0){
-            transmit(states.seg_3);
-        }
-        else if (cont_tx == 1){
-            transmit(45);
-        }
-        else if (cont_tx == 2){
-            transmit(states.seg_2);
-        }
-        else if (cont_tx == 3){
-            transmit(45);
-        }
-        else if (cont_tx == 4){
-            transmit(states.seg_1);
-        }
-        else if (cont_tx == 5){
-            transmit(35);
-        }
-        cont_tx++;
+        
+        transmit(states.seg_1);
         TX_flag = 0;
     }
+    
 }
 int main() {
-    // Initialize all I/O registers to 0
     PORTB = 0x00;
     PORTA = 0x00;
     TRISA &= 0x00;
@@ -99,16 +84,24 @@ int main() {
     ANSELA &= 0x00;
     ANSELB &= 0x00;
     
+    
     oscillator_module();// Configuration of internal oscillator at 4M
     
     config_T1(8,1);// Configuration Timer 1, prescaler of 8, and interrupts enable
     
-    config_serial(1); // Configuration UART, Baud rate 9600, and interrupts enable
+    //Watchdog
+    WDTCON = 0x00;
+    WDTCONbits.WDTPS2 = 1;
+    WDTCONbits.WDTPS3 = 1;  
     
-    config_ADC(1); // Configuration ADC, Reference, analog input and interrupts enable
     
-    TRISBbits.TRISB2 = 1; //TX pin as output
-    enable_interrupts = 1; // Global interrupt enable (GIE)
+    config_serial(1);// Configuration UART, Baud rate 9600, and interrupts enable
+   
+    config_ADC(1);// Configuration ADC, Reference, analog input and interrupts enable
+    
+    TRISBbits.TRISB2 = 1;//TX pin as output
+    
+    enable_interrupts = 1;// Global interrupt enable (GIE)
     
     while(1){
         if(states.flag_result == 1){
@@ -120,7 +113,7 @@ int main() {
                     
                     TRANS2 = 0;
                     TRANS3 = 0;
-                    show_number(states.seg_3); //Function that enable some LEDs depend of the number
+                    show_number(states.seg_3);//Function that enable some LEDs depend of the number
                     TRANS1 = 1;
                     
                     
@@ -147,4 +140,3 @@ int main() {
     
     
 }
-

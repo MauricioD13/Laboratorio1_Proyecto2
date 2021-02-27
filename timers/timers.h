@@ -23,7 +23,7 @@
 #define prescaler_T1_2 0x10
 #define prescaler_T1_4 0x20
 #define prescaler_T1_8 0x30
-#define result_T1 TMR1L | (8<<TMR1H)
+#define result_T1 TMR1L | (TMR1H<<8)
 #define T1_flag PIR1bits.TMR1IF
 #define enable_interrupts INTCONbits.GIE
 #define enable_T1 T1CONbits.TMR1ON
