@@ -6,24 +6,31 @@
 #define overflow_interrupt_T1 PIE1bits.TMR1IE
 #define peripheral_interrupt INTCONbits.PEIE
 
+//TIMER 0
 #define T0_source OPTION_REGbits.T0CS
 #define T0_enable_prescaler OPTION_REGbits.PSA
-#define enable_INTOSC OSCCONbits.SCS1 
-#define M_INTOSC_status OSCSTATbits.MFIOFR
 
+
+//OSCILLATOR
+#define enable_INTOSC OSCCONbits.SCS1 
+#define H_INTOSC_status OSCSTATbits.HFIOFR
+
+#define int_clock_4M OSCCONbits.IRCF0 = 0, OSCCONbits.IRCF1=1, OSCCONbits.IRCF2 = 1, OSCCONbits.IRCF3 = 1
 //FOR TIMER 1
 
 #define T1_source_0 T1CONbits.TMR1CS0
 #define T1_source_1 T1CONbits.TMR1CS1
 #define clean_T1 TMR1H = 0x00, TMR1L = 0x00, PIR1bits.TMR1IF = 0
-#define int_clock_4M OSCCONbits.IRCF0 = 1, OSCCONbits.IRCF1=0, OSCCONbits.IRCF2 = 1, OSCCONbits.IRCF3 = 1
 
 
-int oscillator_module(){
+
+
+
+int oscillator_module(void){
     OSCCON &= 0x00; //Leave to word config the clock system
     OSCCONbits.SCS1 = 1;
     int_clock_4M;
-    return M_INTOSC_status;
+    return H_INTOSC_status;
 }
 
 void config_T1(int prescaler,int interruption){
@@ -53,6 +60,7 @@ void config_T1(int prescaler,int interruption){
         if (interruption == 1){
             overflow_interrupt_T1 = 1;
             peripheral_interrupt = 1;
+            
         }
         
       

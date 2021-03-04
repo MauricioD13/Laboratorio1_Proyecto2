@@ -14,8 +14,8 @@ typedef struct STATES{
     int seg_1;
     int seg_2;
     int seg_3;
+    int flag_init;
     int flag_result;
-    int flag_show;
 }STATES;
 
 void zero();

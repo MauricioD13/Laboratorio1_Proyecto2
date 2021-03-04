@@ -16,7 +16,7 @@ void config_serial(int interruption){
     
     PIE1bits.TXIE = 0;
     
-    if(interruption = 1){
+    if(interruption == 1){
         PIE1bits.TXIE = 1;
     }
     

@@ -1,6 +1,8 @@
 /* 
  * File:   timers.h
- * Author: USER
+ * Author: Mauricio David Cuello Alzate
+ *         Joan Ferney Muñoz Tarazona
+ *         Daniel Guillermo Morantes
  *
  * Created on 12 de febrero de 2021, 07:24 PM
  */
@@ -17,6 +19,8 @@
 #define prescaler_T0_64 0x05
 #define prescaler_T0_128 0x06
 #define prescaler_T0_256 0x07
+#define enable_interrupt_T0 INTCONbits.TMR0IE
+#define T0_FLAG INTCONbits.TMR0IF
 
 //Timer 1
 #define prescaler_T1_0 0x00
@@ -24,11 +28,11 @@
 #define prescaler_T1_4 0x20
 #define prescaler_T1_8 0x30
 #define result_T1 TMR1L | (TMR1H<<8)
-#define T1_flag PIR1bits.TMR1IF
-#define enable_interrupts INTCONbits.GIE
-#define enable_T1 T1CONbits.TMR1ON
+#define T1_FLAG PIR1bits.TMR1IF
+#define ENABLE_INTERRUPTS INTCONbits.GIE
+#define ENABLE_T1 T1CONbits.TMR1ON
 
 void config_T0(int prescaler,int interruption);
 void config_T1(int prescaler,int interruption);
-int oscillator_module();
+int oscillator_module(void);
 #endif	/* TIMERS_H */

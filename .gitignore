@@ -53,8 +53,11 @@ dkms.conf
 
 # MPLAB compile files
 
-timers/build/
-timers/debug/
-timers/dist/
-timers/nbproject/
-timers/Makefile
+PIC16F/build/
+PIC16F/debug/
+PIC16F/dist/
+PIC16F/nbproject/
+PIC16F/Makefile
+env/
+*.pdf
+*.png
