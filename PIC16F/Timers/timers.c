@@ -54,7 +54,7 @@ void config_T1(int prescaler,int interruption){
             
         T1_source_0 = 1; //System clock enable (Fosc)
         T1_source_1 = 0;
-        enable_T1 = 1;
+        ENABLE_T1 = 1;
         overflow_interrupt_T1 = 0;
         peripheral_interrupt = 0;
         if (interruption == 1){
@@ -71,7 +71,7 @@ void config_T0(int prescaler,int interruption){
 
     if(interruption==1){
 
-        enable_interrupts = 1; //set GIE bit
+        ENABLE_INTERRUPTS = 1; //set GIE bit
 
         peripheral_interrupt = 1; //set PEIE bit
 

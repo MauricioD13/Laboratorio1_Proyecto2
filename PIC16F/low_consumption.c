@@ -98,7 +98,7 @@ int main() {
     
     WDTCON = 0x00;
     WDTCONbits.WDTPS = 1;
-    WDTCONbits.WDTPS2 = 1;
+    WDTCONbits.WDTPS2 = 0;
     WDTCONbits.WDTPS3 = 1;//8s Watchdog
     
     while(1){
