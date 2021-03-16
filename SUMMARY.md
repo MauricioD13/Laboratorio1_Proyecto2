@@ -1,4 +1,5 @@
 # Table of contents
 
-* [Initial page](README.md)
+* [Laboratorio 1 de Proyecto en electronica II](README.md)
+
 
